@@ -19,15 +19,14 @@ def shop_trip() -> None:
         )
         for customer in json_data["customers"]
     ]
-    shops = []
-    for shop in json_data["shops"]:
-        shops.append(
-            Shop(
-                shop["name"],
-                shop["location"],
-                shop["products"]
-            )
+    shops = [
+        Shop(
+            shop["name"],
+            shop["location"],
+            shop["products"]
         )
+        for shop in json_data["shops"]
+    ]
     for customer in customers:
         purchase_flag = False
         print(f"{customer.name} has {customer.money} dollars")
