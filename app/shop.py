@@ -18,7 +18,7 @@ class Shop:
     def fulfilled_purchase(self, customer: Customer) -> str:
         receipt = (
             f"Date: "
-            f"{datetime.datetime.now().strftime("%d/%m/%Y %H:%M:%S")}\n"
+            f"{datetime.datetime.now().strftime('%d/%m/%Y %H:%M:%S')}\n"
             f"Thanks, {customer.name}, for your purchase!\nYou have bought"
         )
         receipt += ":\n"
