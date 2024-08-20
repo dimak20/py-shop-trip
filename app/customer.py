@@ -1,7 +1,6 @@
-from __future__ import annotations
-
 import math
 from decimal import Decimal, ROUND_HALF_UP
+from typing import Any
 
 
 class Customer:
@@ -43,7 +42,7 @@ class Car:
     def calculate_cost_distance(
             self,
             customer: Customer,
-            shop: "Shop"
+            shop: Any
     ) -> Decimal:
         sh_cord = (Decimal(shop.location[0]), Decimal(shop.location[1]))
         cu_cord = (
