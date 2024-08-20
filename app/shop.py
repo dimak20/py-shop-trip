@@ -32,7 +32,11 @@ class Shop:
             f"{self.calculate_purchase(customer)} dollars\n"
         )
         for customer_product, quantity in customer.product_cart.items():
-            cost_for_products = quantity * self.products[customer_product]
+            decimal_quantity = Decimal(str(quantity))
+            decimal_shop_product_cost = Decimal(
+                str(self.products[customer_product])
+            )
+            cost_for_products = decimal_quantity * decimal_shop_product_cost
             if cost_for_products % 1 == 0:
                 cost_for_products = int(cost_for_products)
             receipt += (
