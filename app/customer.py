@@ -1,4 +1,3 @@
-import math
 from decimal import Decimal, ROUND_HALF_UP
 from typing import Any
 
@@ -49,8 +48,6 @@ class Car:
             Decimal(customer.location[0]),
             Decimal(customer.location[1])
         )
-        distance = Decimal(math.sqrt(
-            (sh_cord[0] - cu_cord[0]) ** 2 + (sh_cord[1] - cu_cord[1]) ** 2
-        ))
+        distance = ((sh_cord[0] - cu_cord[0]) ** 2 + (sh_cord[1] - cu_cord[1]) ** 2).sqrt()
         cost = distance * 2 * self.fuel_consumption / 100 * Car.FUEL_PRICE
         return cost.quantize(Decimal("0.01"), rounding=ROUND_HALF_UP)
