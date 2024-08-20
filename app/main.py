@@ -30,7 +30,7 @@ def shop_trip() -> None:
     for customer in customers:
         purchase_flag = False
         print(f"{customer.name} has {customer.money} dollars")
-        min_cost = Decimal("0")
+        min_cost = Decimal("infinity")
         shop_index = 0
         for index, shop in enumerate(shops):
             all_cost = (
@@ -41,7 +41,7 @@ def shop_trip() -> None:
                 f"{customer.name}'s trip to the "
                 f"{shop.name} costs {all_cost}"
             )
-            if min_cost == 0 or all_cost < min_cost:
+            if all_cost < min_cost:
                 min_cost = all_cost
                 shop_index = index
         if min_cost <= customer.money:
