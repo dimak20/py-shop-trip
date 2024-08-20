@@ -1,4 +1,5 @@
 import datetime
+from decimal import Decimal
 
 from app.customer import Customer
 
@@ -9,11 +10,15 @@ class Shop:
         self.location = location
         self.products = products
 
-    def calculate_purchase(self, customer: Customer) -> int | float:
-        total_product_cost = 0
+    def calculate_purchase(self, customer: Customer) -> Decimal:
+        total_product_cost = Decimal("0")
         for customer_product, quantity in customer.product_cart.items():
-            total_product_cost += quantity * self.products[customer_product]
-        return round(total_product_cost, 2)
+            total_product_cost += Decimal(
+                str(quantity)
+            ) * Decimal(
+                str(self.products[customer_product])
+            )
+        return total_product_cost
 
     def fulfilled_purchase(self, customer: Customer) -> str:
         receipt = (

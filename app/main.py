@@ -1,7 +1,7 @@
 import json
+from decimal import Decimal
 
-from app.car import Car
-from app.customer import Customer
+from app.customer import Customer, Car
 from app.shop import Shop
 
 
@@ -30,7 +30,7 @@ def shop_trip() -> None:
     for customer in customers:
         purchase_flag = False
         print(f"{customer.name} has {customer.money} dollars")
-        min_cost = 0
+        min_cost = Decimal("0")
         shop_index = 0
         for index, shop in enumerate(shops):
             all_cost = (
@@ -41,10 +41,7 @@ def shop_trip() -> None:
                 f"{customer.name}'s trip to the "
                 f"{shop.name} costs {all_cost}"
             )
-            if min_cost == 0:
-                min_cost = all_cost
-                shop_index = index
-            if all_cost < min_cost:
+            if min_cost == 0 or all_cost < min_cost:
                 min_cost = all_cost
                 shop_index = index
         if min_cost <= customer.money:
@@ -54,7 +51,7 @@ def shop_trip() -> None:
             print(shops[shop_index].fulfilled_purchase(customer))
             print(customer.arrive_home())
             print(f"{customer.name} now "
-                  f"has {round(customer.money - min_cost, 2)} dollars\n")
+                  f"has {customer.money - min_cost} dollars\n")
         else:
             print(f"{customer.name} doesn't have enough money to make"
                   f" a purchase in any shop")
