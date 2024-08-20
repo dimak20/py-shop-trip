@@ -41,7 +41,7 @@ class Car:
     def calculate_cost_distance(
             self,
             customer: Customer,
-            shop: Any
+            shop: object
     ) -> Decimal:
         sh_cord = (Decimal(shop.location[0]), Decimal(shop.location[1]))
         cu_cord = (
