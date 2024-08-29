@@ -1,4 +1,8 @@
-from decimal import Decimal, ROUND_HALF_UP
+from decimal import Decimal
+from typing import List
+
+from app.car import Car, Location
+from app.shop import Shop
 
 
 class Customer:
@@ -7,17 +11,17 @@ class Customer:
             name: str,
             product_cart: dict,
             location: list,
-            money: Decimal,
+            money: int | float,
             car: dict
     ) -> None:
         self.name = name
         self.product_cart = product_cart
-        self.location = location
-        self.home_location = location
+        self.location = Location(location)
+        self.home_location = Location(location)
         self.money = Decimal(str(money))
         self.car = Car(car["brand"], car["fuel_consumption"])
 
-    def arrive_at_shop(self, shop: object) -> str:
+    def arrive_at_shop(self, shop: Shop) -> str:
         self.location = shop.location
         return f"{self.name} rides to {shop.name}\n"
 
@@ -25,31 +29,42 @@ class Customer:
         self.location = self.home_location
         return f"{self.name} rides home"
 
-
-class Car:
-    FUEL_PRICE = Decimal("0")
-
-    def __init__(self, brand: str, fuel_consumption: Decimal) -> None:
-        self.brand = brand
-        self.fuel_consumption = Decimal(str(fuel_consumption))
-
-    @classmethod
-    def change_fuel_price(cls, price: Decimal) -> None:
-        cls.FUEL_PRICE = Decimal(str(price))
-
-    def calculate_cost_distance(
-            self,
-            customer: Customer,
-            shop: object
-    ) -> Decimal:
-        sh_cord = (Decimal(shop.location[0]), Decimal(shop.location[1]))
-        cu_cord = (
-            Decimal(customer.location[0]),
-            Decimal(customer.location[1])
-        )
-        distance = (
-            (sh_cord[0] - cu_cord[0]) ** 2
-            + (sh_cord[1] - cu_cord[1]) ** 2
-        ).sqrt()
-        cost = distance * 2 * self.fuel_consumption / 100 * Car.FUEL_PRICE
-        return cost.quantize(Decimal("0.01"), rounding=ROUND_HALF_UP)
+    def do_shopping(self, shops: List[Shop]) -> None:
+        """
+        I think all this prints and function calls would rather
+        be put in Customer class as a method because all of this actions
+        can be done within Customer instance -
+        you can call it do_shopping or something.
+        Having so many prints inside your main()
+        makes it look messy - it's better to organize this logic
+        """
+        purchase_flag = False
+        print(f"{self.name} has {self.money} dollars")
+        min_cost = Decimal("infinity")
+        shop_index = 0
+        for index, shop in enumerate(shops):
+            all_cost = (
+                    self.location.calculate_cost_distance(
+                        shop.location,
+                        self.car
+                    )
+                    + shop.calculate_purchase(self)
+            )
+            print(
+                f"{self.name}'s trip to the "
+                f"{shop.name} costs {all_cost}"
+            )
+            if all_cost < min_cost:
+                min_cost = all_cost
+                shop_index = index
+        if min_cost <= self.money:
+            purchase_flag = True
+        if purchase_flag:
+            print(self.arrive_at_shop(shops[shop_index]))
+            print(shops[shop_index].fulfilled_purchase(self))
+            print(self.arrive_home())
+            print(f"{self.name} now "
+                  f"has {self.money - min_cost} dollars\n")
+        else:
+            print(f"{self.name} doesn't have enough money to make"
+                  f" a purchase in any shop")

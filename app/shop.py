@@ -1,16 +1,16 @@
 import datetime
 from decimal import Decimal
 
-from app.customer import Customer
+from app.car import Location
 
 
 class Shop:
     def __init__(self, name: str, location: list, products: dict) -> None:
         self.name = name
-        self.location = location
+        self.location = Location(location)
         self.products = products
 
-    def calculate_purchase(self, customer: Customer) -> Decimal:
+    def calculate_purchase(self, customer: "Customer") -> Decimal:
         total_product_cost = Decimal("0")
         for customer_product, quantity in customer.product_cart.items():
             total_product_cost += Decimal(
@@ -20,7 +20,7 @@ class Shop:
             )
         return total_product_cost
 
-    def fulfilled_purchase(self, customer: Customer) -> str:
+    def fulfilled_purchase(self, customer: "Customer") -> str:
         receipt = (
             f"Date: "
             f"{datetime.datetime.now().strftime('%d/%m/%Y %H:%M:%S')}\n"
