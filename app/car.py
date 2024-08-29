@@ -30,8 +30,8 @@ class Location:
             car: Car
     ) -> Decimal:
         distance = (
-                (self.cord[0] - second_coordinate.cord[0]) ** 2
-                + (self.cord[1] - second_coordinate.cord[1]) ** 2
+            (self.cord[0] - second_coordinate.cord[0]) ** 2
+            + (self.cord[1] - second_coordinate.cord[1]) ** 2
         ).sqrt()
         cost = distance * 2 * car.fuel_consumption / 100 * car.FUEL_PRICE
         return cost.quantize(Decimal("0.01"), rounding=ROUND_HALF_UP)

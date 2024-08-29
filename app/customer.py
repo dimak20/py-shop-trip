@@ -44,11 +44,11 @@ class Customer:
         shop_index = 0
         for index, shop in enumerate(shops):
             all_cost = (
-                    self.location.calculate_cost_distance(
-                        shop.location,
-                        self.car
-                    )
-                    + shop.calculate_purchase(self)
+                self.location.calculate_cost_distance(
+                    shop.location,
+                    self.car
+                )
+                + shop.calculate_purchase(self)
             )
             print(
                 f"{self.name}'s trip to the "

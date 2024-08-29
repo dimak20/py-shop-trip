@@ -1,7 +1,11 @@
 import datetime
 from decimal import Decimal
+from typing import TYPE_CHECKING
 
 from app.car import Location
+
+if TYPE_CHECKING:
+    from app.customer import Customer
 
 
 class Shop:
