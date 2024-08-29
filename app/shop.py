@@ -15,14 +15,17 @@ class Shop:
         self.products = products
 
     def calculate_purchase(self, customer: "Customer") -> Decimal:
-        total_product_cost = Decimal("0")
-        for customer_product, quantity in customer.product_cart.items():
-            total_product_cost += Decimal(
-                str(quantity)
-            ) * Decimal(
-                str(self.products[customer_product])
+        return Decimal(
+            sum([
+                Decimal(
+                    str(quantity)
+                ) * Decimal(
+                    str(self.products[customer_product])
+                )
+                for customer_product, quantity in customer.product_cart.items()
+            ]
             )
-        return total_product_cost
+        )
 
     def fulfilled_purchase(self, customer: "Customer") -> str:
         receipt = (
